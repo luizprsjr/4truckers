@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,10 +7,50 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserType {
+  USER
+  TRUCKER
+}
+
 model User {
-  id    String @id @default(uuid())
-  name  String
-  email String @unique
+  id            String         @id @default(uuid())
+  name          String
+  email         String         @unique
+  passwordHash  String
+  phoneNumber   String
+  type          UserType       @default(USER)
+  truck         Truck?         @relation("UserToTruck")
+  createdAt     DateTime       @default(now())
+  announcements Announcement[]
 
   @@map("users")
+}
+
+model Truck {
+  id       String @id @default(uuid())
+  user     User   @relation("UserToTruck", fields: [userId], references: [id])
+  userId   String @unique
+  capacity Float
+  length   Float
+  width    Float
+  height   Float
+
+  @@map("trucks")
+}
+
+model Announcement {
+  id          String    @id @default(uuid())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  description String?
+  weight      Float?
+  length      Float?
+  width       Float?
+  height      Float?
+  canStack    Boolean?
+  departure   DateTime
+  arrival     DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@map("announcements")
 }

@@ -11,6 +11,8 @@
 ## RNs (Regras de negócio)
 
 - [] O usuário não deve poder se cadastrar com um e-mail duplicado;
+- [] Somente usuários do tipo caminhoneiro podem registrar um caminhão;
+- [] Somente usuários do tipo usuário podem colocar informações adicionais no anúncio, essas informações do caminhoneiro devem estar na tabela do caminhão;
 
 ## RNFs (Requisitos não-funcionais)
 
