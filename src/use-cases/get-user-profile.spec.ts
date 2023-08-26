@@ -27,13 +27,11 @@ describe('Authenticate Use Case', () => {
       userId: (await createdUser).id,
     })
 
-    console.log(user)
-
     expect(user.name).toBe('John Doe')
   })
 
   it('should not be able to get user profile with wrong id', async () => {
-    expect(() =>
+    await expect(() =>
       sut.execute({
         userId: 'non-existing-id',
       }),
