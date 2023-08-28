@@ -2,7 +2,7 @@ import { PrismaAnnouncementsRepository } from '@/repositories/prisma/prisma-anno
 
 import { AddAnnouncementUseCase } from '../add-announcement'
 
-export function makeRegisterUseCase() {
+export function makeAddAnnouncementUseCase() {
   const announcementsRepository = new PrismaAnnouncementsRepository()
   const addAnnouncementUseCase = new AddAnnouncementUseCase(
     announcementsRepository,

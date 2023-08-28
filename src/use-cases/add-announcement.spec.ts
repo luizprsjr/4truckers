@@ -1,4 +1,3 @@
-import { type } from 'os'
 import { beforeEach, describe, expect, it, vitest } from 'vitest'
 
 import { InMemoryAnnouncementsRepository } from '@/repositories/in-memory/in-memory-announcements-repository'
