@@ -5,5 +5,6 @@ Prisma.AnnouncementCreateInput should be used if user is not created, when user 
 */
 
 export interface AnnouncementsRepository {
+  findAll(): Promise<Announcement[]>
   create(data: Prisma.AnnouncementUncheckedCreateInput): Promise<Announcement>
 }

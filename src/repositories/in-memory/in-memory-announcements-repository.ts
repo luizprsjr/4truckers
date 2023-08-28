@@ -9,6 +9,10 @@ export class InMemoryAnnouncementsRepository
 {
   public items: Announcement[] = []
 
+  async findAll() {
+    return this.items
+  }
+
   async create(data: Prisma.AnnouncementUncheckedCreateInput) {
     const announcement = {
       id: randomUUID(),
