@@ -39,20 +39,20 @@ model Truck {
 }
 
 model Announcement {
-  id            String    @id @default(uuid())
-  user          User      @relation(fields: [userId], references: [id])
-  userId        String
-  description   String?
-  weight        Float?
-  length        Float?
-  width         Float?
-  height        Float?
-  canStack      Boolean?
-  departure     DateTime
-  departureCity String
-  arrival       DateTime?
-  arrivalCity   String
-  createdAt     DateTime  @default(now())
+  id           String    @id @default(uuid())
+  user         User      @relation(fields: [userId], references: [id])
+  userId       String
+  description  String?
+  weight       Float?
+  length       Float?
+  width        Float?
+  height       Float?
+  canStack     Boolean?
+  pickUpDate   DateTime
+  pickUpCity   String
+  deliveryDate DateTime?
+  deliveryCity String
+  createdAt    DateTime  @default(now())
 
   @@map("announcements")
 }
