@@ -27,13 +27,14 @@ model User {
 }
 
 model Truck {
-  id       String @id @default(uuid())
-  user     User   @relation("UserToTruck", fields: [userId], references: [id])
-  userId   String @unique
-  capacity Float
-  length   Float
-  width    Float
-  height   Float
+  id         String @id @default(uuid())
+  user       User   @relation("UserToTruck", fields: [userId], references: [id])
+  userId     String @unique
+  truckModel String
+  capacity   Float
+  length     Float?
+  width      Float?
+  height     Float?
 
   @@map("trucks")
 }
