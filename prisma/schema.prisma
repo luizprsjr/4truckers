@@ -45,21 +45,27 @@ model Truck {
 }
 
 model Announcement {
-  id           String    @id @default(uuid())
-  user         User      @relation(fields: [userId], references: [id])
-  userId       String
-  type         AdType
-  weight       Float?
-  length       Float?
-  width        Float?
-  height       Float?
-  canStack     Boolean?
-  description  String?
-  pickUpDate   DateTime
-  pickUpCity   String
-  deliveryDate DateTime?
-  deliveryCity String
-  createdAt    DateTime  @default(now())
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  type   AdType
+
+  // generics names for the 2 types of announcements
+  originCity      String // pick up, departure
+  originDate      DateTime // pick up, departure
+  originEndDate   DateTime? // end of the pick up date
+  destinationCity String // delivery, arrival
+  destinationDate DateTime? // arrival (only use for free driver type)
+
+  // only for freights
+  weight      Float?
+  length      Float?
+  width       Float?
+  height      Float?
+  canStack    Boolean?
+  description String?
+
+  createdAt DateTime @default(now())
 
   @@map("announcements")
 }
