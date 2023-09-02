@@ -6,6 +6,7 @@ export async function createAndAuthenticateUser(app: FastifyInstance) {
     name: 'John Doe',
     email: 'johndoe@example.com',
     password: '123456',
+    confirmPassword: '123456',
     phoneNumber: '24998123508',
   })
 

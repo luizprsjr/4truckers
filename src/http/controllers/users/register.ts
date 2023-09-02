@@ -9,12 +9,20 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   const phoneRegex =
     /^\s*(\d{2}|\d{0})[-. ]?(\d{5}|\d{4})[-. ]?(\d{4})[-. ]?\s*$/
 
-  const registerBodySchema = z.object({
-    name: z.string(),
-    email: z.string().email('Provide a valid email.'),
-    password: z.string().min(6, 'The password needs to have 6 characters.'),
-    phoneNumber: z.string().regex(phoneRegex, 'Invalid phone number.'),
-  })
+  const registerBodySchema = z
+    .object({
+      name: z.string().min(3, 'The name needs to have as least 3 characters.'),
+      email: z.string().email('Provide a valid email.'),
+      password: z
+        .string()
+        .min(6, 'The password needs to have at least 6 characters.'),
+      confirmPassword: z.string(),
+      phoneNumber: z.string().regex(phoneRegex, 'Invalid phone number.'),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: 'Password does not match.',
+      path: ['confirmPassword'],
+    })
 
   try {
     const { name, email, password, phoneNumber } = registerBodySchema.parse(
