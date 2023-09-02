@@ -1,11 +1,11 @@
 version: '3'
 
 services:
-  api-rapx-pg:
+  api-4truckers-pg:
     image: bitnami/postgresql
     ports:
       - 5432:5432
     environment:
       - POSTGRESQL_USERNAME=docker
       - POSTGRESQL_PASSWORD=docker
-      - POSTGRESQL_DATABASE=rapx
+      - POSTGRESQL_DATABASE=4truckers
