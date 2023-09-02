@@ -16,16 +16,18 @@ describe('Fetch Announcements Use Case', () => {
   it('should be fetch all announcements', async () => {
     await announcementsRepository.create({
       userId: 'user-01',
-      departureCity: 'any_city',
-      departure: new Date(),
-      arrivalCity: 'other_city',
+      type: 'FREIGHT',
+      originCity: 'any_city',
+      originDate: new Date(),
+      destinationCity: 'other_city',
     })
 
     await announcementsRepository.create({
       userId: 'user-02',
-      departureCity: 'any_city2',
-      departure: new Date(),
-      arrivalCity: 'other_city2',
+      type: 'FREIGHT',
+      originCity: 'any_city2',
+      originDate: new Date(),
+      destinationCity: 'other_city2',
     })
 
     const { announcements } = await sut.execute()

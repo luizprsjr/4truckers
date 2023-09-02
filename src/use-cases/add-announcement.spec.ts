@@ -7,19 +7,25 @@ import { AddAnnouncementUseCase } from './add-announcement'
 let announcementsRepository: InMemoryAnnouncementsRepository
 let sut: AddAnnouncementUseCase
 
+type AdType = 'FREIGHT' | 'FREE_DRIVER'
+
 function makeAnnouncement() {
   return {
     userId: 'user-01',
-    description: 'any-description',
+    type: 'FREIGHT' as AdType,
+
+    originCity: 'any_city',
+    originDate: new Date(),
+    originEndDate: new Date(),
+    destinationCity: 'other_city',
+    destinationDate: new Date(),
+
     weight: 4242,
     length: 4242,
     width: 4242,
     height: 4242,
     canStack: true,
-    departure: new Date(),
-    departureCity: 'any-city',
-    arrival: new Date(),
-    arrivalCity: 'any-arrival-city',
+    description: 'any-description',
   }
 }
 

@@ -7,29 +7,41 @@ import { makeAddAnnouncementUseCase } from '@/use-cases/factories/make-add-annou
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createAnnouncementBodySchema = z.object({
     userId: z.string(),
-    description: z.string().optional(),
+    type: z.enum(['FREIGHT', 'FREE_DRIVER']),
+
+    originCity: z.string(),
+    originDate: z.string().transform((str) => new Date(str)),
+    originEndDate: z
+      .string()
+      .transform((str) => new Date(str))
+      .optional(),
+    destinationCity: z.string(),
+    destinationDate: z
+      .string()
+      .transform((str) => new Date(str))
+      .optional(),
+
     weight: z.number().optional(),
     length: z.number().optional(),
     width: z.number().optional(),
     height: z.number().optional(),
     canStack: z.boolean().optional(),
-    departure: z.string().transform((str) => new Date(str)),
-    departureCity: z.string(),
-    arrival: z.date().optional(),
-    arrivalCity: z.string(),
+    description: z.string().optional(),
   })
 
   const {
-    description,
+    type,
+    originCity,
+    originDate,
+    originEndDate,
+    destinationCity,
+    destinationDate,
     weight,
     length,
     width,
     height,
     canStack,
-    departure,
-    departureCity,
-    arrival,
-    arrivalCity,
+    description,
   } = createAnnouncementBodySchema.parse(request.body)
 
   try {
@@ -37,16 +49,18 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
     await addAnnouncementUseCase.execute({
       userId: request.user.sub,
-      description,
+      type,
+      originCity,
+      originDate,
+      originEndDate,
+      destinationCity,
+      destinationDate,
       weight,
       length,
       width,
       height,
       canStack,
-      departure,
-      departureCity,
-      arrival,
-      arrivalCity,
+      description,
     })
 
     return reply.status(201).send()

@@ -3,16 +3,20 @@ import { Announcement } from '@prisma/client'
 
 interface AddAnnouncementUseCaseRequest {
   userId: string
-  description?: string
+  type: 'FREIGHT' | 'FREE_DRIVER'
+
+  originCity: string
+  originDate: Date
+  originEndDate?: Date
+  destinationCity: string
+  destinationDate?: Date
+
   weight?: number
   length?: number
   width?: number
   height?: number
   canStack?: boolean
-  departure: Date
-  departureCity: string
-  arrival?: Date
-  arrivalCity: string
+  description?: string
 }
 
 interface AddAnnouncementUseCaseResponse {
@@ -24,29 +28,33 @@ export class AddAnnouncementUseCase {
 
   async execute({
     userId,
+    type,
+    originCity,
+    originDate,
+    originEndDate,
+    destinationCity,
+    destinationDate,
     description,
     weight,
     length,
     width,
     height,
     canStack,
-    departure,
-    departureCity,
-    arrival,
-    arrivalCity,
   }: AddAnnouncementUseCaseRequest): Promise<AddAnnouncementUseCaseResponse> {
     const announcement = await this.announcementsRepository.create({
       userId,
+      type,
+      originCity,
+      originDate,
+      originEndDate,
+      destinationCity,
+      destinationDate,
       description,
       weight,
       length,
       width,
       height,
       canStack,
-      departure,
-      departureCity,
-      arrival,
-      arrivalCity,
     })
 
     return { announcement }

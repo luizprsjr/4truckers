@@ -24,9 +24,10 @@ describe('Create Announcement (e2e)', () => {
       .set('Authorization', `Bearer ${token}`)
       .send({
         userId: user.id,
-        departure: new Date(),
-        departureCity: 'any_city',
-        arrivalCity: 'other_city',
+        type: 'FREIGHT',
+        originCity: 'any_city',
+        originDate: new Date(),
+        destinationCity: 'other_city',
       })
 
     expect(response.statusCode).toEqual(201)
