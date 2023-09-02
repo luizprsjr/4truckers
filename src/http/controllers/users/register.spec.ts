@@ -22,4 +22,22 @@ describe('Register (e2e)', () => {
 
     expect(response.statusCode).toEqual(201)
   })
+
+  it('should return the correct validation error message for each field', async () => {
+    const response = await request(app.server).post('/users').send({
+      email: 'john',
+      password: '12345',
+      phoneNumber: '111111',
+    })
+
+    expect(response.statusCode).toEqual(400)
+    expect(JSON.parse(response.text)).toEqual({
+      message: {
+        name: 'Required',
+        email: 'Provide a valid email.',
+        password: 'The password needs to have 6 characters.',
+        phoneNumber: 'Invalid phone number.',
+      },
+    })
+  })
 })
