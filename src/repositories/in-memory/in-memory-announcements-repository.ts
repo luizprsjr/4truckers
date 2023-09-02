@@ -17,16 +17,23 @@ export class InMemoryAnnouncementsRepository
     const announcement = {
       id: randomUUID(),
       userId: data.userId,
-      description: data.description ?? null,
+      type: data.type,
+
+      originCity: data.originCity,
+      originDate: new Date(data.originDate),
+      originEndDate: data.originEndDate ? new Date(data.originEndDate) : null,
+      destinationCity: data.destinationCity,
+      destinationDate: data.destinationDate
+        ? new Date(data.destinationDate)
+        : null,
+
       weight: data.weight ?? null,
       length: data.length ?? null,
       width: data.width ?? null,
       height: data.height ?? null,
       canStack: data.canStack ?? null,
-      departure: new Date(data.departure),
-      departureCity: data.departureCity,
-      arrival: data.arrival ? new Date(data.arrival) : null,
-      arrivalCity: data.arrivalCity ?? null,
+      description: data.description ?? null,
+
       createdAt: new Date(),
     }
 
