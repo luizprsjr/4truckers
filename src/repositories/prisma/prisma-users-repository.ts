@@ -7,6 +7,9 @@ export class PrismaUsersRepository implements UsersRepository {
   async findById(id: string) {
     const user = await prisma.user.findUnique({
       where: { id },
+      include: {
+        truck: true,
+      },
     })
 
     return user
@@ -15,6 +18,9 @@ export class PrismaUsersRepository implements UsersRepository {
   async findByEmail(email: string) {
     const user = await prisma.user.findUnique({
       where: { email },
+      include: {
+        truck: true,
+      },
     })
 
     return user
