@@ -10,6 +10,7 @@ interface RegisterUseCaseRequest {
   email: string
   password: string
   phoneNumber: string
+  type?: 'USER' | 'TRUCKER'
 }
 
 interface RegisterUseCaseResponse {
@@ -24,6 +25,7 @@ export class RegisterUseCase {
     email,
     password,
     phoneNumber,
+    type,
   }: RegisterUseCaseRequest): Promise<RegisterUseCaseResponse> {
     const passwordHash = await hash(password, 6)
 
@@ -38,6 +40,7 @@ export class RegisterUseCase {
       email,
       passwordHash,
       phoneNumber,
+      type,
     })
 
     return { user }

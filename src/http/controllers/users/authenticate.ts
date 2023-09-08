@@ -34,6 +34,10 @@ export async function authenticate(
 
     return reply.status(200).send({
       token,
+      user: {
+        ...user,
+        passwordHash: undefined,
+      },
     })
   } catch (error) {
     if (error instanceof InvalidCredentialsError) {
