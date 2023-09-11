@@ -21,24 +21,26 @@ describe('Refresh Token (e2e)', () => {
       phoneNumber: '24998123508',
     })
 
-    const authResponse = await request(app.server).post('/sessions').send({
+    const { body } = await request(app.server).post('/sessions').send({
       email: 'johndoe@example.com',
       password: '123456',
     })
 
-    const cookies = authResponse.get('Set-Cookie')
+    const OldRefreshToken = body.refreshToken.id
 
-    const response = await request(app.server)
-      .patch('/token/refresh')
-      .set('Cookie', cookies)
-      .send()
+    const response = await request(app.server).patch('/token/refresh').send({
+      oldRefreshToken: OldRefreshToken,
+    })
 
     expect(response.statusCode).toEqual(200)
     expect(response.body).toEqual({
+      refreshToken: {
+        id: expect.any(String),
+        expiresIn: expect.any(Number),
+        userId: expect.any(String),
+      },
       token: expect.any(String),
     })
-    expect(response.get('Set-Cookie')).toEqual([
-      expect.stringContaining('refreshToken='),
-    ])
+    expect(response.body.refreshToken.id).not.toBe(OldRefreshToken)
   })
 })

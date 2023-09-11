@@ -18,7 +18,7 @@ export async function authenticate(
   try {
     const authenticateUseCase = makeAuthenticateUseCase()
 
-    const { user } = await authenticateUseCase.execute({
+    const { user, refreshToken } = await authenticateUseCase.execute({
       email,
       password,
     })
@@ -33,31 +33,14 @@ export async function authenticate(
       },
     )
 
-    const refreshToken = await reply.jwtSign(
-      {},
-      {
-        sign: {
-          sub: user.id,
-          expiresIn: '7d',
-        },
+    return reply.status(200).send({
+      token,
+      refreshToken,
+      user: {
+        ...user,
+        passwordHash: undefined,
       },
-    )
-
-    return reply
-      .setCookie('refreshToken', refreshToken, {
-        path: '/',
-        secure: true,
-        sameSite: true,
-        httpOnly: true,
-      })
-      .status(200)
-      .send({
-        token,
-        user: {
-          ...user,
-          passwordHash: undefined,
-        },
-      })
+    })
   } catch (error) {
     if (error instanceof InvalidCredentialsError) {
       return reply.status(400).send({ message: error.message })

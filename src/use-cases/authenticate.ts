@@ -1,7 +1,9 @@
 import { compare } from 'bcryptjs'
+import dayjs from 'dayjs'
 
+import { RefreshTokenRepository } from '@/repositories/refresh-token-repository'
 import { UsersRepository } from '@/repositories/users-repository'
-import { User } from '@prisma/client'
+import { RefreshToken, User } from '@prisma/client'
 
 import { InvalidCredentialsError } from './errors/invalid-credentials-error'
 
@@ -12,10 +14,14 @@ interface AuthenticateUseCaseRequest {
 
 interface AuthenticateUseCaseResponse {
   user: User
+  refreshToken: RefreshToken
 }
 
 export class AuthenticateUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    private usersRepository: UsersRepository,
+    private refreshTokenRepository: RefreshTokenRepository,
+  ) {}
 
   async execute({
     email,
@@ -33,6 +39,13 @@ export class AuthenticateUseCase {
       throw new InvalidCredentialsError()
     }
 
-    return { user }
+    const expiresIn = dayjs().add(7, 'day').unix()
+
+    const refreshToken = await this.refreshTokenRepository.create({
+      userId: user.id,
+      expiresIn,
+    })
+
+    return { user, refreshToken }
   }
 }
