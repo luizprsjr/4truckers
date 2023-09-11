@@ -35,7 +35,7 @@ export async function authenticate(
 
     return reply.status(200).send({
       token,
-      refreshToken,
+      refreshToken: refreshToken.id,
       user: {
         ...user,
         passwordHash: undefined,

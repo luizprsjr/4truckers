@@ -26,7 +26,7 @@ describe('Refresh Token (e2e)', () => {
       password: '123456',
     })
 
-    const OldRefreshToken = body.refreshToken.id
+    const OldRefreshToken = body.refreshToken
 
     const response = await request(app.server).patch('/token/refresh').send({
       oldRefreshToken: OldRefreshToken,
@@ -34,11 +34,7 @@ describe('Refresh Token (e2e)', () => {
 
     expect(response.statusCode).toEqual(200)
     expect(response.body).toEqual({
-      refreshToken: {
-        id: expect.any(String),
-        expiresIn: expect.any(Number),
-        userId: expect.any(String),
-      },
+      refreshToken: expect.any(String),
       token: expect.any(String),
     })
     expect(response.body.refreshToken.id).not.toBe(OldRefreshToken)
