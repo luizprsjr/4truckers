@@ -7,6 +7,7 @@ import fastifyJwt from '@fastify/jwt'
 
 import { env } from './env'
 import { announcementsRoutes } from './http/controllers/announcements/routes'
+import { trucksRoutes } from './http/controllers/trucks/routes'
 import { usersRoutes } from './http/controllers/users/routes'
 
 export const app = fastify()
@@ -30,6 +31,7 @@ app.register(fastifyJwt, {
 app.register(fastifyCookie)
 
 app.register(usersRoutes)
+app.register(trucksRoutes)
 app.register(announcementsRoutes)
 
 app.setErrorHandler((error, _, reply) => {

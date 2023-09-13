@@ -18,6 +18,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
         .min(6, 'The password needs to have at least 6 characters.'),
       confirmPassword: z.string(),
       phoneNumber: z.string().regex(phoneRegex, 'Invalid phone number.'),
+      type: z.enum(['USER', 'TRUCKER']).optional(),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: 'Password does not match.',
@@ -25,9 +26,8 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
     })
 
   try {
-    const { name, email, password, phoneNumber } = registerBodySchema.parse(
-      request.body,
-    )
+    const { name, email, password, phoneNumber, type } =
+      registerBodySchema.parse(request.body)
 
     const registerUseCase = makeRegisterUseCase()
 
@@ -36,6 +36,7 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
       email,
       password,
       phoneNumber,
+      type,
     })
   } catch (error) {
     if (error instanceof UserAlreadyExistsError) {
