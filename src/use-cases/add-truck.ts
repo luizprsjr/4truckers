@@ -3,6 +3,7 @@ import { UsersRepository } from '@/repositories/users-repository'
 import { Truck } from '@prisma/client'
 
 import { UnauthorizedTruckerAccessError } from './errors/unauthorized-trucker-access-error'
+import { UserAlreadyHaveATruck } from './errors/user-already-have-a-truck'
 
 interface AddTruckUseCaseRequest {
   userId: string
@@ -32,6 +33,10 @@ export class AddTruckUseCase {
     height,
   }: AddTruckUseCaseRequest): Promise<AddTruckUseCaseResponse> {
     const user = await this.usersRepository.findById(userId)
+
+    if (user?.truck) {
+      throw new UserAlreadyHaveATruck()
+    }
 
     if (user?.type !== 'TRUCKER') {
       throw new UnauthorizedTruckerAccessError()

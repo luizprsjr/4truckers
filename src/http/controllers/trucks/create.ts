@@ -1,7 +1,9 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
+import { relative } from 'path'
 import { z } from 'zod'
 
 import { UnauthorizedTruckerAccessError } from '@/use-cases/errors/unauthorized-trucker-access-error'
+import { UserAlreadyHaveATruck } from '@/use-cases/errors/user-already-have-a-truck'
 import { makeAddTruckUseCase } from '@/use-cases/factories/make-add-truck-use-case'
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
@@ -19,7 +21,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
   try {
     const addTruckUseCase = makeAddTruckUseCase()
 
-    await addTruckUseCase.execute({
+    const truck = await addTruckUseCase.execute({
       userId: request.user.sub,
       truckModel,
       capacity,
@@ -28,10 +30,14 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
       height,
     })
 
-    return reply.status(201).send()
+    return reply.status(201).send(truck)
   } catch (error) {
     if (error instanceof UnauthorizedTruckerAccessError) {
       return reply.status(401).send({ message: error.message })
+    }
+
+    if (error instanceof UserAlreadyHaveATruck) {
+      throw reply.status(403).send({ message: error.message })
     }
 
     throw error

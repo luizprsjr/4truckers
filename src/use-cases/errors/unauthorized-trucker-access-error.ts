@@ -1,5 +1,5 @@
 export class UnauthorizedTruckerAccessError extends Error {
   constructor() {
-    super('Unauthorized access: Only trucker users are allowed.')
+    super('Only truckers are allowed to perform this action.')
   }
 }
