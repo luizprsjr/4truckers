@@ -5,7 +5,9 @@ import { AnnouncementsRepository } from '../announcements-repository'
 
 export class PrismaAnnouncementsRepository implements AnnouncementsRepository {
   async findAll() {
-    const announcements = await prisma.announcement.findMany()
+    const announcements = await prisma.announcement.findMany({
+      include: { user: true },
+    })
 
     return announcements
   }

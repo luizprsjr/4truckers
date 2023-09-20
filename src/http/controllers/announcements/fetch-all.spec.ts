@@ -34,6 +34,6 @@ describe('Fetch all announcements (e2e)', () => {
       .set('Authorization', `Bearer ${token}`)
 
     expect(response.statusCode).toEqual(201)
-    expect(response.body.announcements).toHaveLength(1)
+    expect(response.body).toHaveLength(1)
   })
 })

@@ -9,7 +9,7 @@ export async function fetchAll(request: FastifyRequest, reply: FastifyReply) {
 
     const { announcements } = await fetchAnnouncementsUseCase.execute()
 
-    return reply.status(201).send({ announcements })
+    return reply.status(201).send(announcements)
   } catch (error) {
     if (error instanceof UserAlreadyExistsError) {
       return reply.status(409).send({ message: error.message })
