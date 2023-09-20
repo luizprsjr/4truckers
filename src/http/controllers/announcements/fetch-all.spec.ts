@@ -5,7 +5,7 @@ import { app } from '@/app'
 import { prisma } from '@/lib/prisma'
 import { createAndAuthenticateUser } from '@/utils/test/http/create-and-authenticate-user'
 
-describe('Create Announcement (e2e)', () => {
+describe('Fetch all announcements (e2e)', () => {
   beforeAll(async () => {
     await app.ready()
   })
@@ -14,12 +14,12 @@ describe('Create Announcement (e2e)', () => {
     await app.close()
   })
 
-  it('should be able to create an announcement', async () => {
+  it('should be able to fetch all announcements', async () => {
     const { token } = await createAndAuthenticateUser(app)
 
     const user = await prisma.user.findFirstOrThrow()
 
-    const response = await request(app.server)
+    await request(app.server)
       .post('/announcements')
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -29,6 +29,11 @@ describe('Create Announcement (e2e)', () => {
         destinationCity: 'other_city',
       })
 
+    const response = await request(app.server)
+      .get('/announcements')
+      .set('Authorization', `Bearer ${token}`)
+
     expect(response.statusCode).toEqual(201)
+    expect(response.body.announcements).toHaveLength(1)
   })
 })
