@@ -1,9 +1,12 @@
 import { AnnouncementsRepository } from '@/repositories/announcements-repository'
+import { UsersRepository } from '@/repositories/users-repository'
 import { Announcement } from '@prisma/client'
+
+import { NoTruckError } from './errors/no-truck-error'
+import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 interface AddAnnouncementUseCaseRequest {
   userId: string
-  type: 'FREIGHT' | 'FREE_DRIVER'
 
   originCity: string
   originDate: Date
@@ -24,11 +27,13 @@ interface AddAnnouncementUseCaseResponse {
 }
 
 export class AddAnnouncementUseCase {
-  constructor(private announcementsRepository: AnnouncementsRepository) {}
+  constructor(
+    private announcementsRepository: AnnouncementsRepository,
+    private usersRepository: UsersRepository,
+  ) {}
 
   async execute({
     userId,
-    type,
     originCity,
     originDate,
     originEndDate,
@@ -41,6 +46,18 @@ export class AddAnnouncementUseCase {
     height,
     canStack,
   }: AddAnnouncementUseCaseRequest): Promise<AddAnnouncementUseCaseResponse> {
+    const user = await this.usersRepository.findById(userId)
+
+    if (!user) {
+      throw new ResourceNotFoundError()
+    }
+
+    if (user.type === 'TRUCKER' && !user.truck) {
+      throw new NoTruckError()
+    }
+
+    const type = user.type === 'TRUCKER' ? 'FREE_DRIVER' : 'FREIGHT'
+
     const announcement = await this.announcementsRepository.create({
       userId,
       type,
@@ -50,10 +67,10 @@ export class AddAnnouncementUseCase {
       destinationCity,
       destinationDate,
       description,
-      weight,
-      length,
-      width,
-      height,
+      weight: weight ?? user.truck?.capacity,
+      length: length ?? user.truck?.length,
+      width: width ?? user.truck?.width,
+      height: height ?? user.truck?.height,
       canStack,
     })
 

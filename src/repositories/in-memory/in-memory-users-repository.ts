@@ -1,11 +1,15 @@
 import { randomUUID } from 'node:crypto'
 
-import { Prisma, User } from '@prisma/client'
+import { Prisma, Truck, User } from '@prisma/client'
 
 import { UsersRepository } from '../users-repository'
 
+type UserWithTruck = User & {
+  truck: Truck | null
+}
+
 export class InMemoryUsersRepository implements UsersRepository {
-  public items: User[] = []
+  public items: UserWithTruck[] = []
 
   async findById(id: string) {
     const user = this.items.find((item) => item.id === id)
@@ -35,6 +39,7 @@ export class InMemoryUsersRepository implements UsersRepository {
       passwordHash: data.passwordHash,
       phoneNumber: data.phoneNumber,
       type: data.type ?? 'USER',
+      truck: null,
       createdAt: new Date(),
     }
 

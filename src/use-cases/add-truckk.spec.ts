@@ -2,6 +2,8 @@ import { beforeEach, describe, expect, it, vitest } from 'vitest'
 
 import { InMemoryTrucksRepository } from '@/repositories/in-memory/in-memory-trucks-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
+import { makeTruck } from '@/utils/test/usecases/makeTruck'
+import { makeUser } from '@/utils/test/usecases/makeUser'
 
 import { AddTruckUseCase } from './add-truck'
 import { UnauthorizedTruckerAccessError } from './errors/unauthorized-trucker-access-error'
@@ -9,29 +11,6 @@ import { UnauthorizedTruckerAccessError } from './errors/unauthorized-trucker-ac
 let trucksRepository: InMemoryTrucksRepository
 let usersRepository: InMemoryUsersRepository
 let sut: AddTruckUseCase
-
-function makeUser(type = 'TRUCKER' as 'USER' | 'TRUCKER') {
-  return {
-    id: 'user_01',
-    name: 'any_user_name',
-    email: 'eny_mail@mail.com',
-    passwordHash: 'any_hash',
-    phoneNumber: '9999',
-    type,
-    createdAt: new Date(),
-  }
-}
-
-function makeTruck(userId = 'user_01') {
-  return {
-    userId,
-    truckModel: 'any_truck',
-    capacity: 4242,
-    length: 4242,
-    width: 4242,
-    height: 4242,
-  }
-}
 
 describe('Register Use Case', () => {
   beforeEach(async () => {
@@ -42,7 +21,7 @@ describe('Register Use Case', () => {
 
     await vitest
       .spyOn(usersRepository, 'findById')
-      .mockResolvedValue(makeUser())
+      .mockResolvedValue(makeUser('TRUCKER'))
   })
 
   it('should be able to call execute method with correct values', async () => {
@@ -54,7 +33,7 @@ describe('Register Use Case', () => {
   })
 
   it('should be able to add a new truck with correct user id', async () => {
-    const user = makeUser()
+    const user = makeUser('TRUCKER')
     const newTruck = makeTruck(user.id)
     const { truck } = await sut.execute(newTruck)
 
