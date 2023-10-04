@@ -18,6 +18,10 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
       .string()
       .transform((str) => new Date(str))
       .optional(),
+    destinationEndDate: z
+      .string()
+      .transform((str) => new Date(str))
+      .optional(),
 
     weight: z.number().optional(),
     length: z.number().optional(),
@@ -33,6 +37,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     originEndDate,
     destinationCity,
     destinationDate,
+    destinationEndDate,
     weight,
     length,
     width,
@@ -51,6 +56,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
       originEndDate,
       destinationCity,
       destinationDate,
+      destinationEndDate,
       weight,
       length,
       width,

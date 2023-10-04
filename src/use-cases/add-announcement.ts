@@ -13,6 +13,7 @@ interface AddAnnouncementUseCaseRequest {
   originEndDate?: Date
   destinationCity: string
   destinationDate?: Date
+  destinationEndDate?: Date
 
   weight?: number
   length?: number
@@ -39,6 +40,7 @@ export class AddAnnouncementUseCase {
     originEndDate,
     destinationCity,
     destinationDate,
+    destinationEndDate,
     description,
     weight,
     length,
@@ -66,6 +68,7 @@ export class AddAnnouncementUseCase {
       originEndDate,
       destinationCity,
       destinationDate,
+      destinationEndDate,
       description,
       weight: weight ?? user.truck?.capacity,
       length: length ?? user.truck?.length,
