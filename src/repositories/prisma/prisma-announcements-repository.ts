@@ -19,6 +19,19 @@ export class PrismaAnnouncementsRepository implements AnnouncementsRepository {
     return announcement
   }
 
+  async searchMany(query: string) {
+    const announcements = await prisma.announcement.findMany({
+      where: {
+        originCity: {
+          contains: query,
+          mode: 'insensitive',
+        },
+      },
+    })
+
+    return announcements
+  }
+
   async findAll() {
     const currentDate = new Date()
 

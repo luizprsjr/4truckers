@@ -10,6 +10,7 @@ export type AnnouncementWithUser = Prisma.AnnouncementGetPayload<{
 
 export interface AnnouncementsRepository {
   findById(id: string): Promise<AnnouncementWithUser>
+  searchMany(query: string): Promise<Announcement[]>
   findAll(): Promise<Announcement[]>
   create(data: Prisma.AnnouncementUncheckedCreateInput): Promise<Announcement>
 }
