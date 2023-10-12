@@ -26,6 +26,17 @@ export class PrismaUsersRepository implements UsersRepository {
     return user
   }
 
+  async findByGoogleId(googleId: string) {
+    const user = await prisma.user.findUnique({
+      where: { googleId },
+      include: {
+        truck: true,
+      },
+    })
+
+    return user
+  }
+
   async create(data: Prisma.UserCreateInput) {
     const user = await prisma.user.create({
       data,

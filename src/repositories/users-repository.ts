@@ -7,5 +7,6 @@ type UserWithTruck = Prisma.UserGetPayload<{
 export interface UsersRepository {
   findById(id: string): Promise<UserWithTruck | null>
   findByEmail(email: string): Promise<UserWithTruck | null>
+  findByGoogleId(googleId: string): Promise<UserWithTruck | null>
   create(data: Prisma.UserCreateInput): Promise<PrismaUser>
 }

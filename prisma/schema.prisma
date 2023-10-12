@@ -19,10 +19,12 @@ enum AdType {
 
 model User {
   id            String         @id @default(uuid())
+  googleId      String?        @unique
   name          String
   email         String         @unique
-  passwordHash  String
-  phoneNumber   String
+  passwordHash  String?
+  phoneNumber   String?
+  avatarUrl     String?
   type          UserType       @default(USER)
   truck         Truck?         @relation("UserToTruck")
   createdAt     DateTime       @default(now())
