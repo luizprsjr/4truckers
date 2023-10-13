@@ -7,6 +7,7 @@ import { googleAuthenticate } from './google-authenticate'
 import { profile } from './profile'
 import { refresh } from './refresh'
 import { register } from './register'
+import { save } from './save'
 
 export async function usersRoutes(app: FastifyInstance) {
   app.post('/users', register)
@@ -15,5 +16,7 @@ export async function usersRoutes(app: FastifyInstance) {
 
   app.patch('/token/refresh', refresh)
   /** Authenticated */
+
   app.get('/me', { onRequest: [verifyJWT] }, profile)
+  app.put('/users', { onRequest: [verifyJWT] }, save)
 }

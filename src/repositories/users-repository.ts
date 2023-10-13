@@ -9,4 +9,5 @@ export interface UsersRepository {
   findByEmail(email: string): Promise<UserWithTruck | null>
   findByGoogleId(googleId: string): Promise<UserWithTruck | null>
   create(data: Prisma.UserCreateInput): Promise<PrismaUser>
+  save(id: string, data: Prisma.UserUpdateInput): Promise<PrismaUser>
 }
