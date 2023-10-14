@@ -3,11 +3,24 @@ import { User } from '@prisma/client'
 
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
-interface UpdateUserUseCaseRequest {
-  id: string
+interface UserData {
   name?: string
   phoneNumber?: string
   type?: 'USER' | 'TRUCKER'
+}
+
+interface TruckData {
+  truckModel?: string
+  capacity?: number
+  length?: number
+  width?: number
+  height?: number
+}
+
+interface UpdateUserUseCaseRequest {
+  id: string
+  userData: UserData
+  truckData: TruckData
 }
 
 interface UpdateUserUseCaseResponse {
@@ -19,9 +32,8 @@ export class UpdateUserUseCase {
 
   async execute({
     id,
-    name,
-    phoneNumber,
-    type,
+    userData,
+    truckData,
   }: UpdateUserUseCaseRequest): Promise<UpdateUserUseCaseResponse> {
     const userExists = await this.usersRepository.findById(id)
 
@@ -29,11 +41,7 @@ export class UpdateUserUseCase {
       throw new ResourceNotFoundError()
     }
 
-    const user = await this.usersRepository.save(id, {
-      name,
-      phoneNumber,
-      type,
-    })
+    const user = await this.usersRepository.save(id, userData, truckData)
 
     return { user }
   }

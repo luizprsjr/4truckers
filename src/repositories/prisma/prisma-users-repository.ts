@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma'
-import { Prisma } from '@prisma/client'
+import { Prisma, Truck } from '@prisma/client'
 
-import { UsersRepository } from '../users-repository'
+import { UsersRepository, UserWithTruck } from '../users-repository'
 
 export class PrismaUsersRepository implements UsersRepository {
   async findById(id: string) {
@@ -45,14 +45,40 @@ export class PrismaUsersRepository implements UsersRepository {
     return user
   }
 
-  async save(id: string, data: Prisma.UserUpdateInput) {
-    const user = await prisma.user.update({
-      where: {
-        id,
-      },
-      data,
-    })
+  async save(
+    id: string,
+    userData: Prisma.UserUpdateInput,
+    truckData: Prisma.TruckUpdateInput,
+  ) {
+    let updatedUser: UserWithTruck = {} as UserWithTruck
+    let updatedTruck: Truck | undefined
 
-    return user
+    try {
+      await prisma.$transaction(async (prisma) => {
+        updatedUser = await prisma.user.update({
+          where: { id },
+          data: userData,
+          include: {
+            truck: true,
+          },
+        })
+
+        if (updatedUser.truck?.id) {
+          updatedTruck = await prisma.truck.update({
+            where: { id: updatedUser.truck.id },
+            data: truckData,
+          })
+
+          updatedUser.truck = updatedTruck
+        }
+      })
+
+      return updatedUser
+    } catch (error) {
+      console.error('Erro ao atualizar o perfil e o caminhão:', error)
+      throw error
+    } finally {
+      await prisma.$disconnect()
+    }
   }
 }

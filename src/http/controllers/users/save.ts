@@ -12,20 +12,45 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
     name: z.string().optional(),
     phoneNumber: z.string().regex(phoneRegex, 'Invalid phone number.'),
     type: z.enum(['USER', 'TRUCKER']).optional(),
+    truckModel: z.string().optional(),
+    capacity: z.number().optional(),
+    length: z.number().optional(),
+    width: z.number().optional(),
+    height: z.number().optional(),
   })
 
   try {
-    const { name, phoneNumber, type } = registerBodySchema.parse(request.body)
-
-    console.log('aqui')
-
-    const updateUserUseCase = makeUpdateUserUseCase()
-
-    const user = await updateUserUseCase.execute({
-      id: request.user.sub,
+    const {
       name,
       phoneNumber,
       type,
+      truckModel,
+      capacity,
+      length,
+      width,
+      height,
+    } = registerBodySchema.parse(request.body)
+
+    const updateUserUseCase = makeUpdateUserUseCase()
+
+    const userData = {
+      name,
+      phoneNumber,
+      type,
+    }
+
+    const truckData = {
+      truckModel,
+      capacity,
+      length,
+      width,
+      height,
+    }
+
+    const user = await updateUserUseCase.execute({
+      id: request.user.sub,
+      userData,
+      truckData,
     })
 
     return reply.status(200).send(user)

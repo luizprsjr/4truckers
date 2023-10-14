@@ -1,6 +1,6 @@
 import { Prisma, User as PrismaUser } from '@prisma/client'
 
-type UserWithTruck = Prisma.UserGetPayload<{
+export type UserWithTruck = Prisma.UserGetPayload<{
   include: { truck: true }
 }>
 
@@ -9,5 +9,9 @@ export interface UsersRepository {
   findByEmail(email: string): Promise<UserWithTruck | null>
   findByGoogleId(googleId: string): Promise<UserWithTruck | null>
   create(data: Prisma.UserCreateInput): Promise<PrismaUser>
-  save(id: string, data: Prisma.UserUpdateInput): Promise<PrismaUser>
+  save(
+    id: string,
+    userData: Prisma.UserUpdateInput,
+    truckData: Prisma.TruckUpdateInput,
+  ): Promise<UserWithTruck>
 }
