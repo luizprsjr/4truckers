@@ -13,6 +13,8 @@ export async function googleAuthenticate(
 
   const { accessToken } = googleAuthenticateBodySchema.parse(request.body)
 
+  console.log(accessToken)
+
   try {
     const googleAuthenticateUseCase = makeGoogleAuthenticateUseCase()
 
