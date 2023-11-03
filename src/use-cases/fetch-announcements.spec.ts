@@ -18,7 +18,7 @@ describe('Fetch Announcements Use Case', () => {
       userId: 'user-01',
       type: 'FREIGHT',
       originCity: 'any_city',
-      originDate: new Date(),
+      pickupOrDepartureDate: new Date(),
       destinationCity: 'other_city',
     })
 
@@ -26,7 +26,7 @@ describe('Fetch Announcements Use Case', () => {
       userId: 'user-02',
       type: 'FREIGHT',
       originCity: 'any_city2',
-      originDate: new Date(),
+      pickupOrDepartureDate: new Date(),
       destinationCity: 'other_city2',
     })
 

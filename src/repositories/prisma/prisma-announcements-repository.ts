@@ -41,26 +41,26 @@ export class PrismaAnnouncementsRepository implements AnnouncementsRepository {
           {
             AND: [
               {
-                originDate: {
+                pickupOrDepartureDate: {
                   lte: currentDate, // Start date in the past
                 },
               },
               {
-                originEndDate: {
+                pickUpMaxDate: {
                   gte: currentDate, // End date in the future or null
                 },
               },
             ],
           },
           {
-            originDate: {
+            pickupOrDepartureDate: {
               gte: currentDate, // Start date in the future
             },
           },
         ],
       },
       include: { user: true },
-      orderBy: { originDate: 'asc' },
+      orderBy: { pickupOrDepartureDate: 'asc' },
     })
 
     return announcements

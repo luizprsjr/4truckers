@@ -38,7 +38,6 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
       phoneNumber,
       type,
     }
-
     const truckData = {
       truckModel,
       capacity,
@@ -46,7 +45,6 @@ export async function save(request: FastifyRequest, reply: FastifyReply) {
       width,
       height,
     }
-
     const user = await updateUserUseCase.execute({
       id: request.user.sub,
       userData,

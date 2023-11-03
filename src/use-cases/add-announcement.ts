@@ -9,11 +9,11 @@ interface AddAnnouncementUseCaseRequest {
   userId: string
 
   originCity: string
-  originDate: Date
-  originEndDate?: Date
+  pickupOrDepartureDate: Date
+  pickUpMaxDate?: Date
   destinationCity: string
-  destinationDate?: Date
-  destinationEndDate?: Date
+  arrivalOrDeliveryDate?: Date
+  deliveryMaxDate?: Date
 
   weight?: number
   length?: number
@@ -36,11 +36,11 @@ export class AddAnnouncementUseCase {
   async execute({
     userId,
     originCity,
-    originDate,
-    originEndDate,
+    pickupOrDepartureDate,
+    pickUpMaxDate,
     destinationCity,
-    destinationDate,
-    destinationEndDate,
+    arrivalOrDeliveryDate,
+    deliveryMaxDate,
     description,
     weight,
     length,
@@ -64,11 +64,11 @@ export class AddAnnouncementUseCase {
       userId,
       type,
       originCity,
-      originDate,
-      originEndDate,
+      pickupOrDepartureDate,
+      pickUpMaxDate,
       destinationCity,
-      destinationDate,
-      destinationEndDate,
+      arrivalOrDeliveryDate,
+      deliveryMaxDate,
       description,
       weight: weight ?? user.truck?.capacity,
       length: length ?? user.truck?.length,

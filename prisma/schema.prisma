@@ -63,12 +63,15 @@ model Announcement {
   type   AdType
 
   // generics names for the 2 types of announcements
-  originCity         String // pick up, departure
-  originDate         DateTime // pick up, departure
-  originEndDate      DateTime? // end of the pick up date
-  destinationCity    String // delivery, arrival
-  destinationDate    DateTime? // arrival (only use for free driver type)
-  destinationEndDate DateTime? // end of the delivery date
+  originCity            String // pick up, departure
+  pickupOrDepartureDate DateTime // pick up, departure
+
+  pickUpMaxDate DateTime? // end of the pick up date
+
+  destinationCity       String // delivery, arrival
+  arrivalOrDeliveryDate DateTime? // arrival (only use for free driver type)
+
+  deliveryMaxDate DateTime? // end of the delivery date
 
   // only for freights
   weight      Float?

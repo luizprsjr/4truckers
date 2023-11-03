@@ -20,11 +20,11 @@ export class InMemoryAnnouncementsRepository
       type: data.type,
 
       originCity: data.originCity,
-      originDate: new Date(data.originDate),
-      originEndDate: data.originEndDate ? new Date(data.originEndDate) : null,
+      pickupOrDepartureDate: new Date(data.pickupOrDepartureDate),
+      pickUpMaxDate: data.pickUpMaxDate ? new Date(data.pickUpMaxDate) : null,
       destinationCity: data.destinationCity,
-      destinationDate: data.destinationDate
-        ? new Date(data.destinationDate)
+      arrivalOrDeliveryDate: data.arrivalOrDeliveryDate
+        ? new Date(data.arrivalOrDeliveryDate)
         : null,
 
       weight: data.weight ?? null,

@@ -6,10 +6,10 @@ export function makeAnnouncement() {
     type: 'FREIGHT' as AdType,
 
     originCity: 'any_city',
-    originDate: new Date(),
-    originEndDate: new Date(),
+    pickupOrDepartureDate: new Date(),
+    pickUpMaxDate: new Date(),
     destinationCity: 'other_city',
-    destinationDate: new Date(),
+    arrivalOrDeliveryDate: new Date(),
 
     weight: 4242,
     length: 4242,

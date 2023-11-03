@@ -25,7 +25,7 @@ describe('Create Announcement (e2e)', () => {
       .send({
         userId: user.id,
         originCity: 'any_city',
-        originDate: new Date(),
+        pickupOrDepartureDate: new Date(),
         destinationCity: 'other_city',
       })
 

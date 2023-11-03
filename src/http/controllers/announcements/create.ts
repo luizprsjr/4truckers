@@ -8,17 +8,17 @@ import { makeAddAnnouncementUseCase } from '@/use-cases/factories/make-add-annou
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createAnnouncementBodySchema = z.object({
     originCity: z.string(),
-    originDate: z.string().transform((str) => new Date(str)),
-    originEndDate: z
+    pickupOrDepartureDate: z.string().transform((str) => new Date(str)),
+    pickUpMaxDate: z
       .string()
       .transform((str) => new Date(str))
       .optional(),
     destinationCity: z.string(),
-    destinationDate: z
+    arrivalOrDeliveryDate: z
       .string()
       .transform((str) => new Date(str))
       .optional(),
-    destinationEndDate: z
+    deliveryMaxDate: z
       .string()
       .transform((str) => new Date(str))
       .optional(),
@@ -33,11 +33,11 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
   const {
     originCity,
-    originDate,
-    originEndDate,
+    pickupOrDepartureDate,
+    pickUpMaxDate,
     destinationCity,
-    destinationDate,
-    destinationEndDate,
+    arrivalOrDeliveryDate,
+    deliveryMaxDate,
     weight,
     length,
     width,
@@ -52,11 +52,11 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     await addAnnouncementUseCase.execute({
       userId: request.user.sub,
       originCity,
-      originDate,
-      originEndDate,
+      pickupOrDepartureDate,
+      pickUpMaxDate,
       destinationCity,
-      destinationDate,
-      destinationEndDate,
+      arrivalOrDeliveryDate,
+      deliveryMaxDate,
       weight,
       length,
       width,
