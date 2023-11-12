@@ -1,21 +1,41 @@
-# 4truckers
+# 4Truckers API
 
-## RFs (Requisitos funcionais)
+## Getting Started
 
-- [] Deve ser possível se cadastrar;
-- [] Deve ser possível se autenticar;
-- [] Deve ser possível obter o perfil de um usuário logado;
-- [] Deve ser possível cadastrar uma nova viagem;
-- [] Deve ser possível listar as viagens futuras;
+### Step 1: Install Dependencies
 
-## RNs (Regras de negócio)
+First, install project dependencies using NPM:
 
-- [] O usuário não deve poder se cadastrar com um e-mail duplicado;
-- [] Somente usuários do tipo caminhoneiro podem registrar um caminhão;
-- [] Somente usuários do tipo usuário podem colocar informações adicionais no anúncio, essas informações do caminhoneiro devem estar na tabela do caminhão;
+```bash
+npm i
+```
 
-## RNFs (Requisitos não-funcionais)
+### Step 2: Set Up Docker
 
-- [] A senha do usuário precisa estar criptografada;
-- [] Os dados da aplicação precisam estar persistidos em um banco PostgresSQL;
-- [] O usuário dever ser identificado por um JWT;
+Start the project by running the following command to spin up the Docker instances:
+
+```bash
+docker-compose up -d
+```
+
+This will create and start the necessary containers in the background.
+
+### Step 3: Run Migrations
+
+Apply the database migrations using Prisma:
+
+```bash
+npx prisma migrate dev
+```
+
+This will ensure that your database is set up correctly.
+
+### Step 4: Start the Server
+
+Now, you can start the server:
+
+```bash
+npm run start:dev
+```
+
+This command will launch the development server.
